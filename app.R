@@ -7,24 +7,9 @@ rstudio <- read.csv("www/rstudio.csv", stringsAsFactors = FALSE)
 #   actionButton("add", "Add an employee")
 # )
 
-ui <- htmlTemplate("templates/landing.html", thumbnails = uiOutput("thumbnails"))
+ui <- htmlTemplate("views/landing.html")
 
 server <- function(input, output, session) {
-  output$thumbnails <- renderUI({
-    out <- tagList()
-    for (i in seq_len(nrow(rstudio))) {
-      out[[i]] <-
-        HTML(paste0(
-          '<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-            <a class="thumbnail" href="#">
-              <img class="img-responsive" id="', rstudio$Photo[[i]], 
-                  '" src="photos/',  rstudio$Photo[[i]], '.jpg" alt="">
-            </a>
-          </div>'
-      ))
-    }
-    out
-  })
   
   # output$employees <- renderTable({
   #   input$ok
