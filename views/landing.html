@@ -5,9 +5,8 @@
     {{ bootstrapLib() }}
     <script src="js/jquery-csv.js"></script>
     <script src="js/initLoad.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/thumbnail-gallery.css">
     <link rel="stylesheet" type="text/css" href="css/employee-dir.css">
-    <title>Employee Directory</title>
+    <title>RStudio Employee Directory</title>
   </head>
   <body>
     <!-- Navigation -->
@@ -23,14 +22,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">RStudio</a>
+          <a class="navbar-brand" href="#">RStudio Employee Directory</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="#">About</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Contact</a></li>
+          <ul class="nav navbar-nav navbar-right">
+            <li>{{ actionLink("add", "Add") }}</li>
+            <li>{{ actionLink("remove", "Remove") }}</li>
+            <li>{{ actionLink("update", "Update") }}</li>
           </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -41,9 +40,6 @@
     <!-- Page Content -->
     <div class="container">
       <div class="row">
-        <div class="col-lg-12">
-          <h1 class="page-header">RStudio Employee Directory</h1>
-        </div>
         <div id="thumbnails"></div>
       </div>
     </div>

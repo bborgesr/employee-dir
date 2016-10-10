@@ -1,50 +1,46 @@
 library(shiny)
-
 rstudio <- read.csv("www/rstudio.csv", stringsAsFactors = FALSE)
 
-# ui <- fluidPage(
-#   tableOutput("employees"),
-#   actionButton("add", "Add an employee")
-# )
-
-ui <- htmlTemplate("views/landing.html")
+ui <- function(request) {
+  tagList(
+    HTML("<h1>Test</h1>"),
+    htmlTemplate("views/landing.html")
+  )
+}
 
 server <- function(input, output, session) {
+
+  observeEvent(input$add, {
+    showModal(modalDialog(
+      title = "Add an employee",
+      textInput("first", "First name:"),
+      footer = tagList(
+        modalButton("Cancel"),
+        actionButton("ok", "OK")
+      )
+    ))
+  })
+
   
-  # output$employees <- renderTable({
-  #   input$ok
-  #   isolate(rstudioCurrent())
-  # })
-  # 
-  # observeEvent(input$add, {
-  #   showModal(modalDialog(
-  #     title = "Add an employee",
-  #     textInput("first", "First name:"),
-  #     footer = tagList(
-  #       modalButton("Cancel"),
-  #       actionButton("ok", "OK")
-  #     )
-  #   ))
-  # })
-  # 
-  # observeEvent(input$ok, {
-  #   if (isTruthy(input$first)) removeModal()
-  # })
-  # 
-  # rstudioCurrent <- reactive({
-  #   if (isTruthy(input$first)) {
-  #     new <- input$first
-  #     row <- df <- data.frame(First.Name = new,
-  #                             Last.Name = NA, 
-  #                             Title = NA, 
-  #                             GitHub.Username = NA,
-  #                             Photo = NA,
-  #                             Description = NA,
-  #                             stringsAsFactors = FALSE) 
-  #     rbind(rstudio, row)
-  #   }
-  #   else rstudio
-  # })
+  observeEvent(input$ok, {
+    if (isTruthy(input$first)) removeModal()
+  })
+
+  rstudioCurrent <- reactive({
+    if (isTruthy(input$first)) {
+      new <- input$first
+      row <- df <- data.frame(First.Name = new,
+                              Last.Name = NA,
+                              Title = NA,
+                              Location = NA,
+                              GitHub.Username = NA,
+                              Photo = NA,
+                              Description = NA,
+                              stringsAsFactors = FALSE)
+      rbind(rstudio, row)
+    }
+    else rstudio
+  })
   
   # observeEvent(input$add, {
   #   btn <- input$insertBtn
