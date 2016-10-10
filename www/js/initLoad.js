@@ -1,19 +1,6 @@
 
 // Make sure the Shiny connection is established
 $(document).on('shiny:connected', function(event) {
-
-  function equalHeight(group) {    
-    var tallest = 0;    
-    group.each(function() {       
-      var thisHeight = $(this).height();
-      console.log(thisHeight);
-      if (thisHeight > tallest) {          
-        tallest = thisHeight;
-        console.log(tallest);
-      }    
-    });    
-    group.each(function() { $(this).height(tallest); });
-  } 
   
   $.get('../rstudio.csv', function(data) {
     var rstudio  = $.csv.toObjects(data);
@@ -28,18 +15,5 @@ $(document).on('shiny:connected', function(event) {
         '</div>'
       );
     }
-/*
-    $('.thumbnail img').waitForImages(function() {
-      equalHeight($(this));
-      console.log("here");
-    });
-*/
   });
-  
-/* 
-  var lastEmployeeImg = $("#" + rstudio[[rstudio.length - 1]].Photo)
-  .onload = function () {
-    alert ("The image has loaded!");        
-  };
-*/
 });

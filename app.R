@@ -1,10 +1,30 @@
+options(shiny.launch.browser=F, shiny.minified=F, shiny.port = 9000)
+
 library(shiny)
+library(whisker)
+
 rstudio <- read.csv("www/rstudio.csv", stringsAsFactors = FALSE)
 
 ui <- function(request) {
-  tagList(
-    HTML("<h1>Test</h1>"),
-    htmlTemplate("views/landing.html")
+  htmlTemplate("views/landing.html",
+    thumbnails = apply(rstudio, 1, function(row) {
+      
+      out <- whisker.render(readLines("views/profile.html"), data = list(name = row[["First.Name"]]))
+      cat(out, file = paste0("views/", row[["Photo"]], ".html"))
+      
+      tagList(
+        tags$a(href = paste0("views/", row[["Photo"]], ".html")),
+        tags$div(class = "col-lg-3 col-md-4 col-xs-6 thumbnail",
+          tags$img(class = "img-responsive", 
+            id = row[["Photo"]], 
+            src = paste0("photos/", row[["Photo"]], ".jpg"),
+              tags$div(class = "name", 
+                tags$h4(list(row[["First.Name"]], row[["Last.Name"]]))
+              )
+          )
+        )
+      )
+    })
   )
 }
 
@@ -17,7 +37,8 @@ server <- function(input, output, session) {
       footer = tagList(
         modalButton("Cancel"),
         actionButton("ok", "OK")
-      )
+      ),
+      fade = FALSE
     ))
   })
 
