@@ -6,15 +6,16 @@ library(whisker)
 rstudio <- read.csv("www/rstudio.csv", stringsAsFactors = FALSE)
 
 ui <- function(request) {
-  htmlTemplate("views/landing.html",
-    thumbnails = apply(rstudio, 1, function(row) {
+  htmlTemplate("www/views/_landing.html",
+      thumbnails = apply(rstudio, 1, function(row) {
       
-      out <- whisker.render(readLines("views/profile.html"), data = list(name = row[["First.Name"]]))
-      cat(out, file = paste0("views/", row[["Photo"]], ".html"))
+      template <- htmlTemplate("www/views/_landing.html", thumbnails = "{{name}}")
+      out <- whisker.render(readLines("www/views/_profile.html"), data = list(name = row[["First.Name"]]))
+      #cat(out, file = paste0("www/views/", row[["Photo"]], ".html"))
       
-      tagList(
-        tags$a(href = paste0("views/", row[["Photo"]], ".html")),
-        tags$div(class = "col-lg-3 col-md-4 col-xs-6 thumbnail",
+      tags$div(class = "col-lg-3 col-md-4 col-xs-6 thumbnail",
+        onclick = HTML("document.getElementById('main').innerHTML = '", out, "';"),
+        #onclick = paste0('location.href = "#', row[["Photo"]], '";'),
           tags$img(class = "img-responsive", 
             id = row[["Photo"]], 
             src = paste0("photos/", row[["Photo"]], ".jpg"),
@@ -22,7 +23,6 @@ ui <- function(request) {
                 tags$h4(list(row[["First.Name"]], row[["Last.Name"]]))
               )
           )
-        )
       )
     })
   )
