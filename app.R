@@ -6,28 +6,23 @@ library(whisker)
 rstudio <- read.csv("www/rstudio.csv", stringsAsFactors = FALSE)
 
 ui <- function(request) {
-  print("one")
   htmlTemplate("www/views/_landing.html",
-      thumbnails = apply(rstudio, 1, function(row) {
-        
-        out <- whisker.render(readLines("www/views/_profile.html"), data = row)
-        out <- gsub("\n", "", out)
-        
-        tags$div(class = "col-lg-3 col-md-4 col-xs-6 thumbnail",
-          #onclick = HTML("document.getElementById('main').innerHTML = '", out, "';"),
-          #onclick = paste0('location.href = "/views/', row[["Photo"]], '.html";'),
-          #onclick = showModal(modalDialog(title = "Important message","This is an important message!")),
-          onclick = HTML("document.getElementById('main').style.display = 'none';
-                         document.getElementById('profile').innerHTML = '", out, "';
-                         location.hash ='", row[["Photo"]], "';"),
-            tags$img(class = "img-responsive", 
-              src = paste0("photos/", row[["Photo"]], ".jpg"),
-                tags$div(class = "name", 
-                  tags$h4(list(row[["FirstName"]], row[["LastName"]]))
-                )
-            )
-        )
-      })
+    thumbnails = apply(rstudio, 1, function(row) {
+      
+      out <- whisker.render(readLines("www/views/_profile.html"), data = row)
+      out <- gsub("\n", "", out)
+      
+      tags$div(class = "col-lg-3 col-md-4 col-xs-6 thumbnail",
+        onclick = HTML("document.getElementById('main').style.display = 'none';",
+                       "document.getElementById('profile').innerHTML = '", out, "';"),
+          tags$img(class = "img-responsive", 
+            src = paste0("photos/", row[["Photo"]], ".jpg"),
+              tags$div(class = "name", 
+                tags$h4(list(row[["FirstName"]], row[["LastName"]]))
+              )
+          )
+      )
+    })
   )
 }
 

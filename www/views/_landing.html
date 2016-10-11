@@ -3,7 +3,8 @@
   <head>
     {{ headContent() }}
     {{ bootstrapLib() }}
-    <link rel="stylesheet" type="text/css" href="../css/employee-dir.css">
+    <script src="js/employee-dir.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/employee-dir.css">
     <title>RStudio Employee Directory</title>
   </head>
   <body>
@@ -40,10 +41,7 @@
       <div class="row" id="main">
         {{ thumbnails }}
       </div>
-      <div id="profile" 
-            onclick="document.getElementById('main').style.display = 'block';
-                     this.innerHTML = '';"),>
-      </div>
+      <div id="profile"></div>
     </div>
   </body>
 </html>
