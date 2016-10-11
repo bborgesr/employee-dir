@@ -2,6 +2,7 @@ options(shiny.launch.browser=F, shiny.minified=F, shiny.port = 9000)
 
 library(shiny)
 library(whisker)
+source("modules/report.R")
 
 rstudio <- read.csv("www/rstudio.csv", stringsAsFactors = FALSE)
 
@@ -11,12 +12,14 @@ ui <- function(request) {
       
       out <- whisker.render(readLines("www/views/_profile.html"), data = row)
       out <- gsub("\n", "", out)
+      out <- paste(out, generateReportUI(row[["Photo"]]))
       
       tags$div(class = "col-lg-3 col-md-4 col-xs-6 thumbnail",
         onclick = HTML("document.getElementById('main').style.display = 'none';",
                        "document.getElementById('profile').innerHTML = '", out, "';"),
           tags$img(class = "img-responsive", 
             src = paste0("photos/", row[["Photo"]], ".jpg"),
+            id = row[["Photo"]],
               tags$div(class = "name", 
                 tags$h4(list(row[["FirstName"]], row[["LastName"]]))
               )
@@ -28,6 +31,10 @@ ui <- function(request) {
 
 server <- function(input, output, session) {
 
+  for (i in seq_len(nrow(rstudio))) {
+    callModule(generateReport, rstudio[i, "Photo"], data = rstudio[i, "Photo"])
+  }
+  
   observeEvent(input$add, {
     showModal(modalDialog(
       title = "Add an employee",
