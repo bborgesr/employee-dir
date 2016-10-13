@@ -1,0 +1,18 @@
+<!-- Back and Download buttons -->
+<div class="row buttons">
+  <div class="col-xs-6">
+    <button type="button" class="btn btn-primary back">Go Back</button>
+  </div>
+</div>
+
+<!-- Title -->
+<div class="row">
+  <div class="col-lg-12">
+    {{tagList(
+      shinythemes::themeSelector(),
+      selectInput('xcol', 'X Variable', names(iris)),
+      selectInput('ycol', 'Y Variable', names(iris), selected=names(iris)[[2]]),
+      plotOutput('plot1')
+    )}}
+  </div>
+</div>

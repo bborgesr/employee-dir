@@ -2,6 +2,16 @@ body {
   padding-top: 70px;
 }
 
+#analytics {
+  color: #222;
+  background-color: #9d9d9d;
+  border-color: #9d9d9d;
+}
+
+#analytics:hover {
+  color: #fff;
+}
+
 .thumbnail {
   #box-shadow: 0 1px 2px rgba(0,0,0,0.15);
   border: none;
