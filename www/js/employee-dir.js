@@ -1,15 +1,8 @@
 $(document).ready(function() {
   
-  $(document).on( "click", ".back", function() {
-    //$('#thumbnails').show(); 
-    //$('#profile').empty();
-    //$('#app').hide();
-  });
-  
-  $(document).on( "click", "#analytics", function() {
-    //$('#thumbnails').hide(); 
-    //$('#profile').empty();
-    //$('#app').show();
+  $(document).on('shiny:recalculating shiny:recalculate shiny:value', 
+    function(event) {
+      if (event.target.id === 'main') scroll(0,0);
   });
   
 });

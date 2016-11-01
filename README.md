@@ -48,3 +48,4 @@ CRUD can be hard to do, e.g. https://github.com/MangoTheCat/dynshiny/tree/blog
 ## Tensions
 - between being app-driven vs. shiny-driven (i.e. Joe's suggestion that I should focus on what I want the app to do, not what Shiny can do for it): ask what can the app make for Shiny, not what Shiny can make for the app
 
+- https://github.com/rstudio/shiny/issues/532

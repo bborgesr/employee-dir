@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  
   <head>
     {{ headContent() }}
     {{ bootstrapLib() }}
@@ -7,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/employee-dir.css">
     <title>RStudio Employee Directory</title>
   </head>
+  
   <body>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -21,15 +23,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand back" href="#">RStudio</a>
+          {{ actionLink("landing", "RStudio", class = "navbar-brand") }}
+
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li>{{ actionLink("add", "Add") }}</li>
-            <li>{{ actionLink("remove", "Remove") }}</li>
-            <li>{{ actionLink("update", "Update") }}</li>
-            <li><a id="analytics" class="navigate" href="app.html">Analytics</a></li>
+            <li>{{ actionLink("directory", "Directory") }}</li>
+            <li>{{ actionLink("analytics", "Analytics") }}</li>
           </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -38,11 +39,10 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
-      <div class="row" id="main">
-        {{ thumbnails }}
+    <div id="outer" class="container">
+      <div id="inner" class="row">
+        {{ uiOutput("main") }}
       </div>
-      <div id="profile"></div>
     </div>
   </body>
 </html>

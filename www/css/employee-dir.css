@@ -1,5 +1,21 @@
 body {
   padding-top: 70px;
+  overflow-y: scroll;
+  #height: 99%;
+  #overflow-y: hidden;
+}
+
+#outer { 
+  #height: 100%;
+  #width: 100%;
+  #overflow-y: hidden;
+}
+
+#inner {
+  #height: 100%;
+  #width: 100%;
+  #overflow-y: auto;
+  #padding-right: 15px;
 }
 
 #analytics {
@@ -10,6 +26,10 @@ body {
 
 #analytics:hover {
   color: #fff;
+}
+
+.ui-draggable-handle {
+  top: 90px !important;
 }
 
 .thumbnail {
