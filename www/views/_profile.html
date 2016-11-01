@@ -6,26 +6,25 @@
       <h1 class="page-header" style="margin-top: 10px;">
         {{ FirstName }} {{ LastName }}
         <small>{{ Title }}</small>
+        <a href="https://github.com/{{ GitHubUsername }}">
+          <img class="pull-right" src="photos/gh.png" alt="">
+        </a>
       </h1>
     </div>
   </div>
   
   <!-- Content -->
   <div class="row">
-    <div class="col-md-8">
-      <img class="img-responsive" src="http://placehold.it/750x500" alt="">
+    <div class="col-sm-4">
+      <img class="img-responsive profile-img" src="photos/{{ Photo }}.jpg" alt="">
     </div>
 
-    <div class="col-md-4">
-      <h3>Project Description</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
-      <h3>Project Details</h3>
-      <ul>
-          <li>Lorem Ipsum</li>
-          <li>Dolor Sit Amet</li>
-          <li>Consectetur</li>
-          <li>Adipiscing Elit</li>
-      </ul>
+    <div class="col-sm-8">
+      <h3>About</h3>
+      <p>{{ Description }}</p>
+      <br>
+      <h4>Location</h4> 
+      <p>{{ Location }}</p>
     </div>
   </div>
 </div>

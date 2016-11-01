@@ -1,21 +1,10 @@
+html {
+  padding: 0 20px 0 20px;
+}
+
 body {
   padding-top: 70px;
   overflow-y: scroll;
-  #height: 99%;
-  #overflow-y: hidden;
-}
-
-#outer { 
-  #height: 100%;
-  #width: 100%;
-  #overflow-y: hidden;
-}
-
-#inner {
-  #height: 100%;
-  #width: 100%;
-  #overflow-y: auto;
-  #padding-right: 15px;
 }
 
 #analytics {
@@ -26,6 +15,10 @@ body {
 
 #analytics:hover {
   color: #fff;
+}
+
+.profile-img {
+  width: 30vw;
 }
 
 .ui-draggable-handle {

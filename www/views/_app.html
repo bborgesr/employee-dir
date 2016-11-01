@@ -3,7 +3,7 @@
     {{tagList(
       shinythemes::themeSelector(),
       selectInput('xcol', 'X Variable', names(iris)),
-      selectInput('ycol', 'Y Variable', names(iris), selected=names(iris)[[2]]),
+      selectInput('ycol', 'Y Variable', names(iris)),
       plotOutput('plot1')
     )}}
   </div>

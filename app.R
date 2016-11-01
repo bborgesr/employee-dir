@@ -40,13 +40,9 @@ server <- function(input, output, session) {
     } else if (query$page == "analytics") {
       htmlTemplate("www/views/_app.html")
     } else {
-      row <- rstudio[which(rstudio$Photo == query$page), ]
-      htmlTemplate("www/views/_profile.html",
-        Photo = row[["Photo"]],
-        FirstName = row[["FirstName"]],
-        LastName = row[["LastName"]],
-        Title = row[["Title"]]
-      )
+      args <- as.list(rstudio[which(rstudio$Photo == query$page), ])
+      args$filename = "www/views/_profile.html"
+      do.call(htmlTemplate, args)
     }
   })
   
@@ -71,6 +67,16 @@ server <- function(input, output, session) {
       })
     })
   }
+  
+  selectedData <- reactive({
+    iris[, c(input$xcol, input$ycol)]
+  })
+
+  output$plot1 <- renderPlot({
+    plot(cars)
+  }, height = 450, width = 600)
+  
+  outputOptions(output, "plot1", suspendWhenHidden = FALSE)
 }
 
 shinyApp(ui, server)
