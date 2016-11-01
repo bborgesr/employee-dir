@@ -1,0 +1,97 @@
+
+<div id="main">
+<!-- Back and Download buttons -->
+<div class="row buttons">
+  <div class="col-xs-6">
+    <button type="button" class="btn btn-primary back">Go Back</button>
+  </div>
+</div>
+
+<!-- Title -->
+<div class="row">
+  <div class="col-lg-12">
+    
+<div class="draggable" style="top:15px;right:15px;position:fixed;cursor:move; width: 250px; z-index: 100000;">
+  <div class="panel panel-danger" style="box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);">
+    <div class="panel-heading">Select theme:</div>
+    <div class="panel-body">
+      <div class="form-group shiny-input-container">
+        <div>
+          <select id="shinytheme-selector" class="form-control"><option value="default" selected>default</option>
+<option value="cerulean">cerulean</option>
+<option value="cosmo">cosmo</option>
+<option value="cyborg">cyborg</option>
+<option value="darkly">darkly</option>
+<option value="flatly">flatly</option>
+<option value="journal">journal</option>
+<option value="lumen">lumen</option>
+<option value="paper">paper</option>
+<option value="readable">readable</option>
+<option value="sandstone">sandstone</option>
+<option value="simplex">simplex</option>
+<option value="slate">slate</option>
+<option value="spacelab">spacelab</option>
+<option value="superhero">superhero</option>
+<option value="united">united</option>
+<option value="yeti">yeti</option></select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>$('#shinytheme-selector')
+  .on('change', function(el) {
+    var allThemes = $(this).find('option').map(function() {
+      if ($(this).val() === 'default')
+        return 'bootstrap';
+      else
+        return $(this).val();
+    });
+
+    // Find the current theme
+    var curTheme = el.target.value;
+    if (curTheme === 'default') {
+      curTheme = 'bootstrap';
+      curThemePath = 'shared/bootstrap/css/bootstrap.min.css';
+    } else {
+      curThemePath = 'shinythemes/css/' + curTheme + '.min.css';
+    }
+
+    // Find the &lt;link&gt; element with that has the bootstrap.css
+    var $link = $('link').filter(function() {
+      var theme = $(this).attr('href');
+      theme = theme.replace(/^.*\//, '').replace(/(\.min)?\.css$/, '');
+      return $.inArray(theme, allThemes) !== -1;
+    });
+
+    // Set it to the correct path
+    $link.attr('href', curThemePath);
+  });</script>
+</div>
+<script>$(".draggable").draggable();</script>
+<div class="form-group shiny-input-container">
+  <label class="control-label" for="xcol">X Variable</label>
+  <div>
+    <select id="xcol"><option value="Sepal.Length" selected>Sepal.Length</option>
+<option value="Sepal.Width">Sepal.Width</option>
+<option value="Petal.Length">Petal.Length</option>
+<option value="Petal.Width">Petal.Width</option>
+<option value="Species">Species</option></select>
+    <script type="application/json" data-for="xcol" data-nonempty="">{}</script>
+  </div>
+</div>
+<div class="form-group shiny-input-container">
+  <label class="control-label" for="ycol">Y Variable</label>
+  <div>
+    <select id="ycol"><option value="Sepal.Length">Sepal.Length</option>
+<option value="Sepal.Width" selected>Sepal.Width</option>
+<option value="Petal.Length">Petal.Length</option>
+<option value="Petal.Width">Petal.Width</option>
+<option value="Species">Species</option></select>
+    <script type="application/json" data-for="ycol" data-nonempty="">{}</script>
+  </div>
+</div>
+<div id="plot1" class="shiny-plot-output" style="width: 100% ; height: 400px"></div>
+
+  </div>
+</div>
+</div>
