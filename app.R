@@ -9,22 +9,28 @@ source("modules/analytics.R")
 
 rstudio <- read.csv("www/data/rstudio.csv", stringsAsFactors = FALSE)
 github <- read.csv("www/data/github.csv", stringsAsFactors = FALSE)
+app <- analyticsUI("analytics", github = github)
 
 ui <- function(request) {
-  htmlTemplate("www/views/landing.html", 
-               app = analyticsUI("analytics", github = github))
+  htmlTemplate("www/views/landing.html"
+               #, 
+               #app = analyticsUI("analytics", github = github)
+               )
 }
 
 server <- function(input, output, session) {
   
   output$main <- renderUI({
+    
     query <- parseQueryString(session$clientData$url_search)
+    
+    # if (query$page != "analytics") shinyjs::hide("app")
+    # else shinyjs::show("app")
     
     if (identical(query, list())) {
       pushState(NULL, NULL, "?page=directory")
     }
     else if (query$page == "directory") {
-      shinyjs::hide("app")
       tags$div(id = "thumbnails",
         apply(rstudio, 1, function(row) {
           tagList(
@@ -43,7 +49,8 @@ server <- function(input, output, session) {
         })
       )
     } else if (query$page == "analytics") {
-      shinyjs::show("app")
+      app
+      #shinyjs::show("app")
       #htmlTemplate("www/views/app.html")
       # callModule(analytics, "analytics")
     } else {
@@ -75,16 +82,6 @@ server <- function(input, output, session) {
       })
     })
   }
-  
-  selectedData <- reactive({
-    iris[, c(input$xcol, input$ycol)]
-  })
-
-  output$plot1 <- renderPlot({
-    plot(cars)
-  }, height = 450, width = 600)
-  
-  outputOptions(output, "plot1", suspendWhenHidden = FALSE)
   
   callModule(analytics, "analytics", github = github)
 }
