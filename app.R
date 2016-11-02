@@ -1,14 +1,18 @@
 options(shiny.launch.browser=F, shiny.minified=F, shiny.port = 9000)
 
 library(shiny)
+library(dplyr)
 library(shinythemes)
-library(whisker)
 library(ggplot2)
 
-rstudio <- read.csv("www/rstudio.csv", stringsAsFactors = FALSE)
+source("modules/analytics.R")
+
+rstudio <- read.csv("www/data/rstudio.csv", stringsAsFactors = FALSE)
+github <- read.csv("www/data/github.csv", stringsAsFactors = FALSE)
 
 ui <- function(request) {
-  htmlTemplate("www/views/_landing.html")
+  htmlTemplate("www/views/landing.html", 
+               app = analyticsUI("analytics", github = github))
 }
 
 server <- function(input, output, session) {
@@ -20,6 +24,7 @@ server <- function(input, output, session) {
       pushState(NULL, NULL, "?page=directory")
     }
     else if (query$page == "directory") {
+      shinyjs::hide("app")
       tags$div(id = "thumbnails",
         apply(rstudio, 1, function(row) {
           tagList(
@@ -38,10 +43,13 @@ server <- function(input, output, session) {
         })
       )
     } else if (query$page == "analytics") {
-      htmlTemplate("www/views/_app.html")
+      shinyjs::show("app")
+      #htmlTemplate("www/views/app.html")
+      # callModule(analytics, "analytics")
     } else {
+      #shinyjs::hide(id = "app")
       args <- as.list(rstudio[which(rstudio$Photo == query$page), ])
-      args$filename = "www/views/_profile.html"
+      args$filename = "www/views/profile.html"
       do.call(htmlTemplate, args)
     }
   })
@@ -77,6 +85,8 @@ server <- function(input, output, session) {
   }, height = 450, width = 600)
   
   outputOptions(output, "plot1", suspendWhenHidden = FALSE)
+  
+  callModule(analytics, "analytics", github = github)
 }
 
 shinyApp(ui, server)
