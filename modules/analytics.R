@@ -6,8 +6,7 @@ analyticsUI <- function(id, github) {
     theme = shinytheme("cosmo"),
     
     tags$p("This is a snapshot of our profiles and activity on Github as of",
-      "October 2016.", strong("Hover over each bar"), "to see that",
-      "person's info!"),
+      "October 2016.", strong("Click on each bar"), "to see that person's info!"),
     tags$br(),
     
     fluidRow(
@@ -31,7 +30,7 @@ analyticsUI <- function(id, github) {
       
       column(width = 8, 
         plotOutput(ns("plt"), 
-          hover = hoverOpts(id = ns("plt_hover"), delay = 20)
+          click = clickOpts(id = ns("plt_click"))
         )
       )
     ),
@@ -74,8 +73,8 @@ analytics <- function(input, output, session, github) {
                                          levels = rv$github$GitHubUsername)
       oldSort$n <- input$sort
     }
-    if (!is.null(input$plt_hover$x)) {
-      rv$selected <- round(input$plt_hover$x)
+    if (!is.null(input$plt_click$x)) {
+      rv$selected <- round(input$plt_click$x)
     }
   })
   
