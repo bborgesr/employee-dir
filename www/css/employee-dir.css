@@ -34,14 +34,7 @@ body {
   width: 30vw;
 }
 
-/*
-.ui-draggable-handle {
-  top: 90px !important;
-}
-*/
-
 .thumbnail {
-  /* box-shadow: 0 1px 2px rgba(0,0,0,0.15); */
   border: none;
   margin-bottom: 0;
   -webkit-transition: all 1s ease;
@@ -62,14 +55,12 @@ body {
 }
 
 .thumbnail:hover {
-  /* transform: scale(1.2, 1.2); */
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   z-index: 1;
   cursor: pointer;
 }
 
 .thumbnail:hover img {
-  /* opacity: 0.5; */
   -webkit-filter: none;
   filter: none;
 }
@@ -92,25 +83,15 @@ body {
   color: #ffffff;
   background-color: #2780e3;
   border-color: #2780e3;
-  /* color: #333; */
-  /* background-color: #6aa0d6; */
   border-radius: 5px;
 }
-
 
 .thumbnail:hover .name h4 {
   opacity: 1;
   color: #ffffff;
   background-color: #1967be;
-  /* background-color: #274a64; */
   border-color: #1862b5;
-  /* padding: 4%;
-  margin-right: 6%;
-  margin-left: 3%;
-  width: 91%;
-  bottom: 0; */
 }
-
 
 .thumbnail {
   -webkit-user-select: none;  /* Chrome all / Safari all */
@@ -122,6 +103,7 @@ body {
 .analyticsName {
   margin-top: 0px;
 }
+
 .leaflet {
   height: 230px !important;
 }
