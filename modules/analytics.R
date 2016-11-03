@@ -3,29 +3,33 @@ analyticsUI <- function(id, github) {
   ns <- NS(id)
   
   fluidPage(
+    theme = shinytheme("cosmo"),
     
-    p("This is a snapshot of our profiles and activity on Github as of",
+    tags$p("This is a snapshot of our profiles and activity on Github as of",
       "October 2016.", strong("Hover over each bar"), "to see that",
       "person's info!"),
-    br(),
+    tags$br(),
     
-    sidebarLayout(
+    fluidRow(
       
-      sidebarPanel(
-        # shinythemes::themeSelector(),
-        selectInput(ns("flt"), "Filter by title:", 
-          choices = unique(github$Title), 
-          selected = c("Software Engineer"),
-          multiple = TRUE),
-        radioButtons(ns("yaxis"), "Select the y-axis", 
-          choices = c("Repos", "Stars", "Followers", 
-                     "Following", "Contributions"),
-          selected = "Contributions"),
-        actionButton(ns("sort"), "Sort"),
-        actionButton(ns("unslct"), "Unselect")
+      column(width = 4,
+        tags$div(id = "inputCol",
+          selectInput(ns("flt"), "Filter by title:", 
+            choices = unique(github$Title), 
+            selected = c("Software Engineer", "Founder", "CTO", 
+                         "Master Instructor", "Chief Scientist"),
+            multiple = TRUE),
+          radioButtons(ns("yaxis"), "Select the y-axis", 
+            choices = c("Repos", "Stars", "Followers", 
+                        "Following", "Contributions"),
+            selected = "Contributions"),
+          actionButton(ns("sort"), "Sort"),
+          actionButton(ns("unslct"), "Unselect person", 
+            class = "btn btn-primary")
+        )
       ),
       
-      mainPanel(
+      column(width = 8, 
         plotOutput(ns("plt"), 
           hover = hoverOpts(id = ns("plt_hover"), delay = 20)
         )
@@ -33,8 +37,8 @@ analyticsUI <- function(id, github) {
     ),
     
     fluidRow(
-      column(width = 6, htmlOutput(ns("info"))),
-      column(width = 6, leafletOutput(ns("map")))
+      column(width = 4, uiOutput(ns("info"))),
+      column(width = 8, leafletOutput(ns("map")))
     )
   )
 }
@@ -50,7 +54,7 @@ analytics <- function(input, output, session, github) {
   
   observeEvent(input$flt, {
     rv$github <- rv$github %>% filter(Title %in% input$flt)
-    rv$selected <- NULL
+    rv$selected <- 22   # hadley
   })
   
   observe({
@@ -84,44 +88,46 @@ analytics <- function(input, output, session, github) {
     github[rv$selected, "Color"] <- "#ddd"
     ggplot(github, aes(x = GitHubUsername, y = yaxis, fill = Color)) + 
       geom_bar(stat="identity") + 
+      scale_fill_manual(values=c("#1967be", "#000000")) +
       labs(x = "GitHub Username", y = input$yaxis) +
       guides(fill = FALSE)
   })
   
-  output$info <- renderText({
+  output$info <- renderUI({
     req(rv$selected)
-    HTML(paste0(
-      '<h1 class="page-header">',
-      rv$github[rv$selected, "FirstName"], " ", rv$github[rv$selected, "LastName"], " ",
-      '<small>', rv$github[rv$selected, "Title"], '</small>',
-      '</h1>',
-      '<div class="row">',
-      '<div class="col-xs-6">',
-      '<img class="img-responsive" 
-      src="photos/', rv$github[rv$selected, "Photo"], '.jpg" 
-      alt="" height="200" width="200" style="inline">',
-      '</div>',
-      '<div class="col-xs-6">',
-      '<div><strong>Github Info:</strong></div>',
-      '<div>Number of Repos: ', rv$github[rv$selected, "Repos"],'</div>',
-      '<div>Number of Stars: ', rv$github[rv$selected, "Stars"],'</div>',
-      '<div>Number of Followers: ', rv$github[rv$selected, "Followers"],'</div>',
-      '<div>Number of Followees: ', rv$github[rv$selected, "Following"],'</div>',
-      '<div>Number of Contributions: ', rv$github[rv$selected, "Contributions"],'</div>',
-      '</div>',
-      '</div>'
-    ))
+    row <- rv$github[rv$selected, ]
+    
+    tags$div(
+      tags$h3(class = "analyticsName", 
+              row[["FirstName"]], " ", row[["LastName"]]),
+      tags$h4(row[["Title"]]),
+      tags$div(class = "row",
+        tags$div(class = "col-xs-6",
+          tags$img(class = "img-responsive",
+                   src = paste0("photos/", row[["Photo"]], ".jpg"),
+                   height = "200", width = "200", style = "inline")
+        ),
+        tags$div(class = "col-xs-6",
+          tags$div(tags$strong("Github Info:")),
+          tags$div(paste("Repos: ", row[["Repos"]])),
+          tags$div(paste("Stars: ", row[["Stars"]])),
+          tags$div(paste("Followers: ", row[["Followers"]])),
+          tags$div(paste("Following: ", row[["Following"]])),
+          tags$div(paste("Contributions: ", row[["Contributions"]]))
+        )
+      )
+    )
   })
   
   output$map <- renderLeaflet({
     req(rv$selected)
     leaflet() %>%
       addTiles() %>% 
-      setView(-40.614032, 39.746552, zoom = 1) %>%
+      setView(-40.614032, 39.746552, zoom = 1) %>%  # middle of the Atlantic
       addMarkers(lng = as.numeric(rv$github[rv$selected, "Longitude"]), 
                  lat = as.numeric(rv$github[rv$selected, "Latitude"]), 
                  popup = paste(rv$github[rv$selected, "FirstName"],
                                rv$github[rv$selected, "LastName"])) %>%
-      fitBounds(38.066040, 6.814138, -131.330978, 50.097924)
+      fitBounds(38.066040, 6.814138, -131.330978, 50.097924) # frames US and Europe
   })
 }
