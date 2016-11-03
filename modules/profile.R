@@ -7,7 +7,7 @@ profileUI <- function(id) {
 profile <- function(input, output, session, rstudio, employee) {
   
   output$profile <- renderUI({
-    args <- as.list(rstudio[which(rstudio$Photo == employee), ])
+    args <- as.list(rstudio[which(rstudio$Photo == employee()), ])
     args$filename = "www/views/profile.html"
     do.call(htmlTemplate, args)
   })
