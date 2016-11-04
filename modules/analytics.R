@@ -35,6 +35,8 @@ analyticsUI <- function(id, github) {
       )
     ),
     
+    tags$br(),
+    
     fluidRow(
       column(width = 4, uiOutput(ns("info"))),
       column(width = 8, leafletOutput(ns("map")))
