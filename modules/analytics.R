@@ -57,6 +57,7 @@ analytics <- function(input, output, session, github) {
   })
   
   observe({
+    rv$github <-  rv$github %>% filter(GitHubUsername != "")
     rv$github$GitHubUsername <- factor(rv$github$GitHubUsername, 
                                        levels = rv$github$GitHubUsername)
     rv$github$yaxis <- switch(input$yaxis,
