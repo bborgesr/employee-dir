@@ -22,13 +22,11 @@ directoryUI <- function(id, rstudio) {
 }
 
 directory <- function(input, output, session, rstudio) {
-  for (i in seq_len(nrow(rstudio))) {
-    local({
-      name <- rstudio[i, "Photo"]
-      element <- paste0("a-", name)
-      observeEvent(input[[element]], {
-        pushState(NULL, NULL, paste0("?page=", name))
-      })
+  lapply(as.list(seq_len(nrow(rstudio))), function(i) {
+    name <- rstudio[i, "Photo"]
+    element <- paste0("a-", name)
+    observeEvent(input[[element]], {
+      pushState(NULL, NULL, paste0("?page=", name))
     })
-  }
+  })
 }
