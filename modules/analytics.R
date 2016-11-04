@@ -52,7 +52,7 @@ analytics <- function(input, output, session, github) {
   )
   
   observeEvent(input$flt, {
-    rv$github <- rv$github %>% filter(Title %in% input$flt)
+    rv$github <- github %>% filter(Title %in% input$flt)
     rv$selected <- 22   # hadley
   })
   
