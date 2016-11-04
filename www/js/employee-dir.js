@@ -1,26 +1,17 @@
-/*
 $(document).ready(function() {
   
-  $(document).on('popstate', function(e) {scroll(0,0);});
-//    function(event) {
-//      if (event.target.id === 'main') scroll(0,0);
-//  });
+  $(document).on('shiny:recalculating', 
+    function(event) {
+      if (event.target.id === 'profile-profile') {
+        $('#profile-profile').hide()
+      }
+  });
   
-//  $( ".action-button" ).bind( "click", function() {
-//    alert( "User clicked on 'foo.'" );
-//  });
-  
-});
-*/
-
-
-/*
-$(document).ready(function() {
-  
-  $(document).on("shiny:conditional", function(event) {
-    scroll(0,0);
+  $(document).on('shiny:recalculated shiny:value', 
+    function(event) {
+      if (event.target.id === 'profile-profile') {
+        $('#profile-profile').show()
+      }
   });
   
 });
-
-*/

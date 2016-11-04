@@ -25,17 +25,30 @@ ui <- function(request) {
     ),
     profile = conditionalPanel(
       condition = "output.view === 'profile'",
-      profileUI("profile")
+      tags$div(id = "profilePlaceholder")
     )
+      
+    # profile = conditionalPanel(
+    #   condition = "output.view === 'profile'",
+    #   ""
+    # )
+    
+    # uiOutput("profile")
+    # conditionalPanel(
+    #   condition = "output.view === 'profile'",
+    #   uiOutput("profile")
+    #   profileUI("profile")
+    # )
   )
 }
 
 server <- function(input, output, session) {
   
-  rv <- reactiveValues(currentEmployee = "")
+  #rv <- reactiveValues(currentEmployee = "")
   
   output$view <- reactive({
     query <- parseQueryString(session$clientData$url_search)
+    #rv$currentEmployee = ""
 
     if (identical(query, list())) {
       pushState(NULL, NULL, "?page=directory")
@@ -43,19 +56,34 @@ server <- function(input, output, session) {
     }
     
     if (query$page %in% rstudio$Photo) {
-      rv$currentEmployee = query$page
+      removeUI(selector = ".profile")
+      insertUI(
+        selector = "#profilePlaceholder",
+        where = "afterEnd",
+        ui = profileUI(query$page)
+      )
+      callModule(profile, query$page, rstudio = rstudio, query$page)
+      #rv$currentEmployee = query$page
+      
       return("profile")
+      # rv$currentEmployee = query$page
+      # return("profile")
     }
     
     query$page
   })
   
+  # output$profile <- renderUI({
+  #   req(rv$currentEmployee)
+  #   profileUI("profile")
+  # })
+  
   outputOptions(output, "view", suspendWhenHidden = FALSE)
   
   callModule(directory, "dir", rstudio = rstudio)
   callModule(analytics, "app", github = github)
-  callModule(profile, "profile", rstudio = rstudio, 
-             employee = reactive(rv$currentEmployee))
+  # callModule(profile, "profile", rstudio = rstudio, 
+  #            employee = reactive(rv$currentEmployee))
   
   observeEvent(input$landing, pushState(NULL, NULL, "?page=directory"))
   observeEvent(input$directory, pushState(NULL, NULL, "?page=directory"))
