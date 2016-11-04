@@ -1,10 +1,13 @@
-RStudio Employee directory: a CRUD Shiny app
+RStudio Employee directory
+
+<!--
+: a CRUD Shiny app
 
 CRUD can be hard to do, e.g. https://github.com/MangoTheCat/dynshiny/tree/blog
 
 ## Log of things that came up in the process
 - templates, static subpages...
-    - how to nagivate between different parts of the app without getting disconnected (ex: you can't go to another view - using for example location.href) --> right the only way to do this is hackish:
+    - how to nagivate between different parts of the app without getting disconnected (ex: you can't go to another view - using for example location.href) -> right the only way to do this is hackish:
     
     ```r
     $(document).on( "click", ".back", function() {
@@ -42,10 +45,11 @@ CRUD can be hard to do, e.g. https://github.com/MangoTheCat/dynshiny/tree/blog
 - modules (how I'll include the actual app)
 - tests (!!!! yes, Tareef, I know)
 - repolling of GitHub (??)
-- bookmark (app only) --> how does this work with subtemplates
+- bookmark (app only) -> how does this work with subtemplates
 - Rmd report (app only)
 
 ## Tensions
 - between being app-driven vs. shiny-driven (i.e. Joe's suggestion that I should focus on what I want the app to do, not what Shiny can do for it): ask what can the app make for Shiny, not what Shiny can make for the app
 
 - https://github.com/rstudio/shiny/issues/532
+-->
