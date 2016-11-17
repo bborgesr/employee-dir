@@ -7,8 +7,9 @@ library(ggplot2)
 library(leaflet)
 
 source("modules/directory.R")
-source("modules/profile.R")
+source("modules/timezone.R")
 source("modules/analytics.R")
+source("modules/profile.R")
 
 rstudio <- read.csv("www/data/rstudio.csv", stringsAsFactors = FALSE)
 github <- read.csv("www/data/github.csv", stringsAsFactors = FALSE)
@@ -16,12 +17,16 @@ github <- read.csv("www/data/github.csv", stringsAsFactors = FALSE)
 ui <- function(request) {
   htmlTemplate("www/views/landing.html",
     dir = conditionalPanel(
-     condition = "output.view === 'directory'",
-     directoryUI("dir", rstudio = rstudio)
-    ), 
+      condition = "output.view === 'directory'",
+      directoryUI("dir", rstudio = rstudio)
+    ),
+    timezone = conditionalPanel(
+      condition = "output.view === 'timezone'",
+      timezoneUI("time")
+    ),
     app = conditionalPanel(
-     condition = "output.view === 'analytics'",
-     analyticsUI("app", github = github)
+      condition = "output.view === 'analytics'",
+      analyticsUI("app", github = github)
     ),
     profile = conditionalPanel(
       condition = "output.view === 'profile'",
@@ -60,10 +65,12 @@ server <- function(input, output, session) {
   outputOptions(output, "view", suspendWhenHidden = FALSE)
   
   callModule(directory, "dir", rstudio)
+  callModule(timezone, "time")
   callModule(analytics, "app", github)
   
   observeEvent(input$landing, pushState(NULL, NULL, "?page=directory"))
   observeEvent(input$directory, pushState(NULL, NULL, "?page=directory"))
+  observeEvent(input$timezone, pushState(NULL, NULL, "?page=timezone"))
   observeEvent(input$analytics, pushState(NULL, NULL, "?page=analytics"))
 }
 
