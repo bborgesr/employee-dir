@@ -3,6 +3,8 @@ title:
 account: barbara
 server: beta.rstudioconnect.com
 appId: 2003
-bundleId: 4293
+bundleId: 4723
 url: https://beta.rstudioconnect.com/content/2003/
-when: 1478615626.08941
+when: 1482879540.21482
+asMultiple: FALSE
+asStatic: FALSE

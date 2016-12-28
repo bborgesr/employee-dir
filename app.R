@@ -38,11 +38,11 @@ ui <- function(request) {
 server <- function(input, output, session) {
   
   output$view <- reactive({
-    query <- parseQueryString(session$clientData$url_search)
+    query <- getQueryString()
     removeUI(selector = ".profile")
 
     if (identical(query, list())) {
-      pushState(NULL, NULL, "?page=directory")
+      updateQueryString("?page=directory", mode = "push")
       return()
     }
     
@@ -68,10 +68,10 @@ server <- function(input, output, session) {
   callModule(timezone, "time")
   callModule(analytics, "app", github)
   
-  observeEvent(input$landing, pushState(NULL, NULL, "?page=directory"))
-  observeEvent(input$directory, pushState(NULL, NULL, "?page=directory"))
-  observeEvent(input$timezone, pushState(NULL, NULL, "?page=timezone"))
-  observeEvent(input$analytics, pushState(NULL, NULL, "?page=analytics"))
+  observeEvent(input$landing, updateQueryString("?page=directory", mode = "push"))
+  observeEvent(input$directory, updateQueryString("?page=directory", mode = "push"))
+  observeEvent(input$timezone, updateQueryString("?page=timezone", mode = "push"))
+  observeEvent(input$analytics, updateQueryString("?page=analytics", mode = "push"))
 }
 
 shinyApp(ui, server)

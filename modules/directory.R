@@ -26,7 +26,7 @@ directory <- function(input, output, session, rstudio) {
     name <- rstudio[i, "Photo"]
     element <- paste0("a-", name)
     observeEvent(input[[element]], {
-      pushState(NULL, NULL, paste0("?page=", name))
+      updateQueryString(paste0("?page=", name), mode = "push")
     })
   })
 }
