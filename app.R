@@ -1,5 +1,3 @@
-options(shiny.launch.browser=F, shiny.minified=F, shiny.port = 9000)
-
 library(shiny)
 library(dplyr)
 library(shinythemes)
@@ -29,36 +27,20 @@ ui <- function(request) {
       analyticsUI("app", github = github)
     ),
     profile = conditionalPanel(
-      condition = "output.view === 'profile'",
-      tags$div(id = "profilePlaceholder")
+      condition = "rstudio.Photos.indexOf(output.view) !== -1;",
+      profileUI("profile")
     )
   )
 }
 
 server <- function(input, output, session) {
   
-  output$view <- reactive({
+  output$view <- subpage <- reactive({
     query <- getQueryString()
-    removeUI(selector = ".profile")
-
     if (identical(query, list())) {
       updateQueryString("?page=directory", mode = "push")
       return()
     }
-    
-    if (query$page %in% rstudio$Photo) {
-      
-      insertUI(
-        selector = "#profilePlaceholder",
-        where = "afterEnd",
-        ui = profileUI(query$page)
-      )
-      
-      callModule(profile, query$page, rstudio, query$page)
-      
-      return("profile")
-    }
-    
     query$page
   })
   
@@ -67,6 +49,7 @@ server <- function(input, output, session) {
   callModule(directory, "dir", rstudio)
   callModule(timezone, "time")
   callModule(analytics, "app", github)
+  callModule(profile, "profile", rstudio, subpage)
   
   observeEvent(input$landing, updateQueryString("?page=directory", mode = "push"))
   observeEvent(input$directory, updateQueryString("?page=directory", mode = "push"))
