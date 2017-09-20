@@ -27,7 +27,7 @@ ui <- function(request) {
       analyticsUI("app", github = github)
     ),
     profile = conditionalPanel(
-      condition = "rstudio.Photos.indexOf(output.view) !== -1;",
+      condition = "rstudio.Photos.indexOf(output.view) !== -1",
       profileUI("profile")
     )
   )
